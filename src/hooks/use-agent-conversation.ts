@@ -13,7 +13,6 @@ import type { SpeakerRecognitionResult } from '../types/recognition';
 import { useAudioPlayer } from './use-audio-player';
 import { useSpeakerRecognition } from './use-speaker-recognition';
 import { ELEVENLABS_AGENT_ID } from '../constants';
-import { useNavigate } from 'react-router';
 
 // Función auxiliar para enviar mensajes JSON a través del WebSocket
 const sendMessage = (websocket: WebSocket, request: object) => {
@@ -29,7 +28,6 @@ interface Asset {
 }
 
 export const useAgentConversation = () => {
-  const navigate = useNavigate();
 
   const [asset, setAsset] = useState<Asset>({
     type: 'image',
@@ -132,9 +130,6 @@ export const useAgentConversation = () => {
         console.log('Interruption event received', data.interruption_event);
       }
       if(data.type === 'client_tool_call'){
-        if(data.client_tool_call.tool_name === 'onNavigateRobots'){
-          navigate('/robots');
-        }
         if (data.client_tool_call.tool_name === 'onSetImageUrl'){
           const parameters = data.client_tool_call.parameters as {
             url: string;
