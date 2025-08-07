@@ -151,6 +151,9 @@ export const useAgentConversation = () => {
             url: parameters.url,
           });
         }
+        if (data.client_tool_call.tool_name === 'onNavigateRobots') {
+          window.open("https://robots.educabot.com/bloques-75401", "_blank");
+        }
       }
       if (data.type === 'audio') {
         if (data.audio_event?.audio_base_64) {
@@ -177,7 +180,6 @@ export const useAgentConversation = () => {
     };
 
     // ELIMINADO: La lógica de enviar el 'contextual_update' se movió de aquí al callback.
-    
     elevenLabsSocketRef.current = websocket;
   }, [
     isConversationConnected,
