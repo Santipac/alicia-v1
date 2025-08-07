@@ -22,8 +22,16 @@ const sendMessage = (websocket: WebSocket, request: object) => {
   websocket.send(JSON.stringify(request));
 };
 
+interface Asset {
+  type: 'image' | 'video';
+  url: string | null;
+}
+
 export const useAgentConversation = () => {
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [asset, setAsset] = useState<Asset>({
+    type: 'image',
+    url: null,
+  });
   // --- Refs y Estado para la conexión con ElevenLabs ---
   const elevenLabsSocketRef = useRef<WebSocket | null>(null);
   const [isConversationConnected, setIsConversationConnected] =
@@ -119,10 +127,24 @@ export const useAgentConversation = () => {
         console.log('Interruption event received', data.interruption_event);
       }
       if(data.type === 'client_tool_call'){
-        const parameters = data.client_tool_call.parameters as {
-          url: string;
-        };
-        setImageUrl(parameters.url);
+        if(data.client_tool_call.tool_name === 'onSetImageUrl'){
+          const parameters = data.client_tool_call.parameters as {
+            url: string;
+          };
+          setAsset({
+            type: 'image',
+            url: parameters.url,
+          });
+        }
+        if(data.client_tool_call.tool_name === 'onSetVideoUrl'){
+          const parameters = data.client_tool_call.parameters as {
+            url: string;
+          };
+          setAsset({
+            type: 'video',
+            url: parameters.url,
+          });
+        }
       }
       if (data.type === 'audio') {
         if (data.audio_event?.audio_base_64) {
@@ -138,7 +160,10 @@ export const useAgentConversation = () => {
       stopStreaming();
       clearQueue();
       stopRecognition();
-      setImageUrl(null);
+      setAsset({
+        type: 'image',
+        url: null,
+      });
     };
 
     websocket.onerror = error => {
@@ -161,7 +186,10 @@ export const useAgentConversation = () => {
   const stopConversation = useCallback(async () => {
     console.log('Deteniendo todas las conexiones...');
     stopRecognition();
-    setImageUrl(null);
+    setAsset({
+      type: 'image',
+      url: null,
+    });
     elevenLabsSocketRef.current?.close(1000, 'User ended conversation');
   }, [stopRecognition]);
 
@@ -181,6 +209,6 @@ export const useAgentConversation = () => {
     isAgentSpeaking,
     isRecognitionConnected,
     inferredSpeaker: currentSpeaker, // Devolvemos el estado, que sí actualizará la UI
-    imageUrl,
+    asset,
   };
 };

@@ -2,8 +2,9 @@ import AnimatedOrb from './components/animated-orb';
 import { Conversation } from './components/conversation';
 import GradientLayout from './components/gradient-layout';
 import { motion } from 'motion/react';
-import '@fontsource/geist';
 import { useAgentConversation } from './hooks/use-agent-conversation';
+import { VideoPlayer, VideoPlayerContent, VideoPlayerControlBar, VideoPlayerMuteButton, VideoPlayerPlayButton, VideoPlayerSeekBackwardButton, VideoPlayerSeekForwardButton, VideoPlayerTimeDisplay, VideoPlayerTimeRange, VideoPlayerVolumeRange } from './components/ui/video';
+import '@fontsource/geist';
 
 export default function App() {
   const {
@@ -13,7 +14,7 @@ export default function App() {
     inferredSpeaker,
     isAgentSpeaking,
     stopConversation,
-    imageUrl,
+    asset,
   } = useAgentConversation();
 
   return (
@@ -38,17 +39,43 @@ export default function App() {
         >
           <AnimatedOrb />
         </motion.div>
-        {imageUrl && (
+        {asset.type === 'image' && asset.url && (
           <motion.div
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
           >
             <img
-              src={imageUrl}
+              src={asset.url}
               alt="Imagen del agente"
               className="max-w-[250px] h-[250px] w-fit  object-contain"
             />
+          </motion.div>
+        )}
+        {asset.type === 'video' && asset.url && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 50, scale: 0.9 }}
+          >
+            <VideoPlayer className="overflow-hidden rounded-lg border">
+              <VideoPlayerContent
+                crossOrigin=""
+                muted
+                preload="auto"
+                slot="media"
+                src={asset.url}
+              />
+              <VideoPlayerControlBar>
+                <VideoPlayerPlayButton />
+                <VideoPlayerSeekBackwardButton />
+                <VideoPlayerSeekForwardButton />
+                <VideoPlayerTimeRange />
+                <VideoPlayerTimeDisplay showDuration />
+                <VideoPlayerMuteButton />
+                <VideoPlayerVolumeRange />
+              </VideoPlayerControlBar>
+            </VideoPlayer>
           </motion.div>
         )}
         <motion.h1
