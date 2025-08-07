@@ -78,14 +78,16 @@ export const useAgentConversation = () => {
       );
 
       // Construimos el mensaje dinámico para notificar el cambio
-      const contextMessage = `Hubo un cambio de hablante. Ahora habla ${newSpeaker}, antes estaba hablando ${previousSpeaker}. Por favor, saludame ahora yo conversare con vos`;
+      const contextMessage = `Hubo un cambio de hablante. Ahora habla ${newSpeaker}, antes estaba hablando ${previousSpeaker}. Recuerda saludarlo y llamarlo por su nombre.`;
 
       if (elevenLabsSocketRef.current?.readyState === WebSocket.OPEN) {
         // NOTA: 'contextual_update' es un ejemplo. Verifica la documentación de ElevenLabs
         // para el tipo de mensaje correcto para actualizar el contexto de la conversación.
         console.log("sended message")
+        console.log(contextMessage);
+        
         sendMessage(elevenLabsSocketRef.current, {
-          type: 'user_message', // <- Verifica si este tipo es correcto
+          type: 'contextual_update', // <- Verifica si este tipo es correcto
           text: contextMessage,
         });
       }
