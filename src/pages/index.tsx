@@ -1,12 +1,12 @@
-import AnimatedOrb from './components/animated-orb';
-import { Conversation } from './components/conversation';
-import GradientLayout from './components/gradient-layout';
+import AnimatedOrb from '../components/animated-orb';
+import { Conversation } from '../components/conversation';
+import GradientLayout from '../components/gradient-layout';
+import { useAgentConversation } from '../hooks/use-agent-conversation';
+import { VideoPlayer, VideoPlayerContent, VideoPlayerControlBar, VideoPlayerMuteButton, VideoPlayerPlayButton, VideoPlayerSeekBackwardButton, VideoPlayerSeekForwardButton, VideoPlayerTimeDisplay, VideoPlayerTimeRange, VideoPlayerVolumeRange } from '../components/ui/video';
 import { motion } from 'motion/react';
-import { useAgentConversation } from './hooks/use-agent-conversation';
-import { VideoPlayer, VideoPlayerContent, VideoPlayerControlBar, VideoPlayerMuteButton, VideoPlayerPlayButton, VideoPlayerSeekBackwardButton, VideoPlayerSeekForwardButton, VideoPlayerTimeDisplay, VideoPlayerTimeRange, VideoPlayerVolumeRange } from './components/ui/video';
 import '@fontsource/geist';
 
-export default function App() {
+export default function HomePage() {
   const {
     startConversation,
     isConversationConnected,

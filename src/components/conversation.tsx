@@ -50,7 +50,7 @@ export function Conversation({
               <Button
                 onClick={handleStart}
                 disabled={isConversationConnected}
-                className="bg-purple-500 hover:bg-purple-600 text-white"
+                className="bg-blue-500 hover:bg-blue-600 text-white"
               >
                 <motion.div
                   className="flex items-center justify-center space-x-3"
@@ -222,8 +222,8 @@ export function Conversation({
                 <div className="flex items-center space-x-2">
                   {inferredSpeaker ? (
                     <>
-                      <User className="w-4 h-4 text-purple-400" />
-                      <span className="text-purple-400 font-semibold">
+                      <User className="w-4 h-4 text-blue-400" />
+                      <span className="text-blue-400 font-semibold">
                         {inferredSpeaker}
                       </span>
                     </>
