@@ -123,12 +123,11 @@ export const useAgentConversation = () => {
 
     websocket.onmessage = async event => {
       const data = JSON.parse(event.data) as ElevenLabsWebSocketEvent;
-      console.log("data: ", data);
       if (data.type === 'interruption') {
         console.log('Interruption event received', data.interruption_event);
       }
-      if (data.type === 'client_tool_call') {
-        if (data.client_tool_call.tool_name === 'onSetImageUrl') {
+      if(data.type === 'client_tool_call'){
+        if(data.client_tool_call.tool_name === 'onSetImageUrl'){
           const parameters = data.client_tool_call.parameters as {
             url: string;
           };
@@ -137,7 +136,7 @@ export const useAgentConversation = () => {
             url: parameters.url,
           });
         }
-        if (data.client_tool_call.tool_name === 'onSetVideoUrl') {
+        if(data.client_tool_call.tool_name === 'onSetVideoUrl'){
           const parameters = data.client_tool_call.parameters as {
             url: string;
           };
@@ -175,7 +174,6 @@ export const useAgentConversation = () => {
     };
 
     // ELIMINADO: La lógica de enviar el 'contextual_update' se movió de aquí al callback.
-
     elevenLabsSocketRef.current = websocket;
   }, [
     isConversationConnected,
