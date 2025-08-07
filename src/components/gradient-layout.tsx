@@ -15,7 +15,7 @@ export default function GradientLayout({
           backgroundImage: `
         radial-gradient(
           circle at top center,
-          rgba(173, 109, 244, 0.5),
+          rgba(109, 213, 244, 0.5),
           transparent 70%
         )
       `,
